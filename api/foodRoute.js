@@ -20,6 +20,21 @@ router.get('/allfoods', async (req, res) => {
 })
 
 
+router.post('/addFood', async (req, res) => {
+    try {
+        console.log(req.body);
+        await Food.insertMany({
+            ...req.body
+        });
+        res.sendStatus(200);
+    } catch (e) {
+        res.status(404).json({
+            'msg': "Cannot fetch the foods at the moment"
+        });
+    }
+})
+
+
 router.post('/placeorder', async (req, res) => {
 
     try {
