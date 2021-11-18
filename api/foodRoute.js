@@ -60,4 +60,19 @@ router.post('/placeorder', async (req, res) => {
 
 })
 
+router.delete('/delete/:id', async (req, res) => {
+
+    try {
+        console.log("received");
+        const {
+            id
+        } = req.params;
+        console.log(id);
+        await Food.findByIdAndDelete(id);
+        res.sendStatus(200);
+    } catch (e) {
+        res.sendStatus(400);
+    }
+})
+
 module.exports = router;
