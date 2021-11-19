@@ -63,7 +63,6 @@ router.post('/placeorder', async (req, res) => {
 router.delete('/delete/:id', async (req, res) => {
 
     try {
-        console.log("received");
         const {
             id
         } = req.params;
@@ -71,6 +70,18 @@ router.delete('/delete/:id', async (req, res) => {
         await Food.findByIdAndDelete(id);
         res.sendStatus(200);
     } catch (e) {
+        res.sendStatus(400);
+    }
+})
+
+router.patch('/editFood', async(req, res) => {
+
+    try{
+    const{id,name,desc,price} = req.body;
+    await Food.findByIdAndUpdate(id,{name:name,desc:desc,price:price});
+    res.sendStatus(200);
+    }
+    catch (e) {
         res.sendStatus(400);
     }
 })
