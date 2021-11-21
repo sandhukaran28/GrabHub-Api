@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const seedDb = require('./seed');
 const foodRouter = require('./api/foodRoute');
 const cors = require('cors');
+const userRouter = require('./api/userRoute');
+require('dotenv').config();
 
 
 mongoose.connect('mongodb://localhost:27017/GrabHub')
@@ -21,6 +23,7 @@ app.options('*', cors())
 app.use(express.json());
 
 app.use(foodRouter);
+app.use(userRouter);
 
 
 
