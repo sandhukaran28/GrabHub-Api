@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Food = require('../models/food');
 const Order = require('../models/order');
+const auth = require('../middleware/auth');
 
 
 
@@ -74,14 +75,22 @@ router.delete('/delete/:id', async (req, res) => {
     }
 })
 
-router.patch('/editFood', async(req, res) => {
+router.patch('/editFood', async (req, res) => {
 
-    try{
-    const{id,name,desc,price} = req.body;
-    await Food.findByIdAndUpdate(id,{name:name,desc:desc,price:price});
-    res.sendStatus(200);
-    }
-    catch (e) {
+    try {
+        const {
+            id,
+            name,
+            desc,
+            price
+        } = req.body;
+        await Food.findByIdAndUpdate(id, {
+            name: name,
+            desc: desc,
+            price: price
+        });
+        res.sendStatus(200);
+    } catch (e) {
         res.sendStatus(400);
     }
 })

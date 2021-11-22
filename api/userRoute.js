@@ -128,5 +128,23 @@ router.get('/auth/logout', (req, res) => {
     }).send();
 })
 
+router.get('/auth/isLoggedIn', (req, res) => {
+
+    try {
+
+        const token = req.cookies.token;
+        if (!token) {
+            res.json(false);
+        }
+
+        jwt.verify(token, process.env.JWT_SECRET_KEY);
+        res.json(true);
+
+
+    } catch (e) {
+        res.send(false);
+    }
+})
+
 
 module.exports = router;
