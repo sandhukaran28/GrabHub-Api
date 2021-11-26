@@ -19,19 +19,18 @@ mongoose.connect('mongodb://localhost:27017/GrabHub')
     })
 // seedDb();
 
-
-app.use(cors({
-    credentials: true
-}));
-app.options('*', cors())
 app.use(express.json());
+app.use(cors({
+    origin: ['http://localhost:3000', 'https://practical-dijkstra-8bb15f.netlify.app'],
+    credentials: true
+}, ))
+
+app.options('*', cors())
 app.use(cookieParser());
+
 
 app.use(foodRouter);
 app.use(userRouter);
-
-
-
 
 
 
