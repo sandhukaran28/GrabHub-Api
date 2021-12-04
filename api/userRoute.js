@@ -17,18 +17,21 @@ router.post('/auth/new', async (req, res) => {
             res.status(400).json({
                 errorMessage: 'Please Enter all required fields'
             });
+            return;
         }
 
         if (password.length < 6) {
             res.status(400).json({
                 errorMessage: 'Please Enter password of at least 6 characters'
             });
+            return;
         }
 
         if (password != passwordVerify) {
             res.status(400).json({
                 errorMessage: 'Passwords does not match'
             });
+            return;
         }
 
         const existingUser = await User.findOne({
