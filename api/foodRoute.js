@@ -21,7 +21,7 @@ router.get('/allfoods', async (req, res) => {
 })
 
 
-router.post('/addFood', async (req, res) => {
+router.post('/addFood', auth, async (req, res) => {
     try {
         console.log(req.body);
         await Food.insertMany({
@@ -36,7 +36,7 @@ router.post('/addFood', async (req, res) => {
 })
 
 
-router.post('/placeorder', async (req, res) => {
+router.post('/placeorder', auth, async (req, res) => {
 
     try {
         const {
@@ -61,7 +61,7 @@ router.post('/placeorder', async (req, res) => {
 
 })
 
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/delete/:id', auth, async (req, res) => {
 
     try {
         const {
@@ -75,7 +75,7 @@ router.delete('/delete/:id', async (req, res) => {
     }
 })
 
-router.patch('/editFood', async (req, res) => {
+router.patch('/editFood', auth, async (req, res) => {
 
     try {
         const {

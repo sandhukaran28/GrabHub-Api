@@ -7,12 +7,13 @@ router.post('/auth/new', async (req, res) => {
 
     try {
         const {
+            name,
             email,
             password,
             passwordVerify
         } = req.body;
 
-        if (!email || !password || !passwordVerify) {
+        if (!name || !email || !password || !passwordVerify) {
 
             res.status(400).json({
                 errorMessage: 'Please Enter all required fields'
@@ -51,6 +52,7 @@ router.post('/auth/new', async (req, res) => {
         // Saving User
 
         const newUser = new User({
+            name,
             email,
             passwordHash
         });
@@ -59,13 +61,16 @@ router.post('/auth/new', async (req, res) => {
 
         // sign the token
         const token = jwt.sign({
-            user: savedUser._id
+            user: savedUser._id,
         }, process.env.JWT_SECRET_KEY);
 
         // sending token
         res.cookie("token", token, {
             httpOnly: true,
-        }).send();
+        });
+        res.cookie("name", name);
+        res.cookie("email", email);
+        res.send();
 
     } catch (e) {
         console.error(e);
@@ -109,13 +114,16 @@ router.post('/auth/login', async (req, res) => {
 
         // sign the token
         const token = jwt.sign({
-            user: existingUser._id
+            user: existingUser._id,
         }, process.env.JWT_SECRET_KEY);
 
         // sending token
         res.cookie("token", token, {
             httpOnly: true,
-        }).send();
+        });
+        res.cookie("name", name);
+        res.cookie("email", email);
+        res.send();
 
     } catch (e) {
         console.error(e);
@@ -138,6 +146,7 @@ router.get('/auth/isLoggedIn', (req, res) => {
         const token = req.cookies.token;
         if (!token) {
             res.json(false);
+            return;
         }
 
         jwt.verify(token, process.env.JWT_SECRET_KEY);
