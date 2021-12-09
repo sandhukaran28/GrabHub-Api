@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const auth = require('../middleware/auth');
 router.post('/auth/new', async (req, res) => {
 
     try {
@@ -93,6 +94,7 @@ router.post('/auth/login', async (req, res) => {
             res.status(400).json({
                 errorMessage: 'Please Enter all required fields'
             });
+            return
         }
         const existingUser = await User.findOne({
             email
@@ -102,6 +104,7 @@ router.post('/auth/login', async (req, res) => {
             res.status(401).json({
                 errorMessage: 'Wrong Email or password'
             });
+            return
         }
 
         const passwordCorrect = await bcrypt.compare(password, existingUser.passwordHash);
@@ -110,6 +113,7 @@ router.post('/auth/login', async (req, res) => {
             res.status(401).json({
                 errorMessage: 'Wrong Email or password'
             });
+            return;
         }
 
         // sign the token
@@ -121,7 +125,6 @@ router.post('/auth/login', async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
         });
-        res.cookie("name", name);
         res.cookie("email", email);
         res.send();
 
@@ -155,6 +158,23 @@ router.get('/auth/isLoggedIn', (req, res) => {
 
     } catch (e) {
         res.send(false);
+    }
+})
+
+
+router.get('/user/orders', auth, async (req, res) => {
+
+    try {
+        const cookies = req.cookies.email;
+        const user = await User.findOne({
+            email: cookies
+        });
+        // await user.populate('orders.foods');
+        console.log(user);
+        res.sendStatus(200);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(400);
     }
 })
 

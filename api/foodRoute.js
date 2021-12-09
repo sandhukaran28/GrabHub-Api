@@ -3,6 +3,7 @@ const router = express.Router();
 const Food = require('../models/food');
 const Order = require('../models/order');
 const auth = require('../middleware/auth');
+const User = require('../models/User');
 
 
 
@@ -43,10 +44,20 @@ router.post('/placeorder', auth, async (req, res) => {
             cart: orderedItems
         } = req.body;
         const newOrder = new Order({
-            orderedItems
+            orderedItem: orderedItems
         });
         console.log(orderedItems);
         await newOrder.save();
+        const cookies = req.cookies.email;
+        await User.findOneAndUpdate({
+            email: cookies
+        }, {
+            $push: {
+                "orders": {
+                    newOrder
+                }
+            }
+        })
         res.status(200).json({
             'msg': 'Order Placed Successfully'
         });

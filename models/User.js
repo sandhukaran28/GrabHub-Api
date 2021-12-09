@@ -12,7 +12,11 @@
         passwordHash: {
             type: String,
             required: true
-        }
+        },
+        orders: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Order'
+        }]
     });
 
     const User = mongoose.model('user', userSchema);
