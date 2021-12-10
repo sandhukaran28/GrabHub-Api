@@ -14,6 +14,7 @@
             required: true
         },
         orders: [{
+            _id: false,
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Order'
         }]

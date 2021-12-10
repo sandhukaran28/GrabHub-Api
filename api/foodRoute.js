@@ -53,9 +53,7 @@ router.post('/placeorder', auth, async (req, res) => {
             email: cookies
         }, {
             $push: {
-                "orders": {
-                    newOrder
-                }
+                "orders": newOrder
             }
         })
         res.status(200).json({

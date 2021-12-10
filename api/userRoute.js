@@ -168,10 +168,10 @@ router.get('/user/orders', auth, async (req, res) => {
         const cookies = req.cookies.email;
         const user = await User.findOne({
             email: cookies
-        });
-        // await user.populate('orders.foods');
-        console.log(user);
-        res.sendStatus(200);
+        }).populate("orders");
+        const orders = user.orders;
+        console.log(orders);
+        res.status(200).json(orders);
     } catch (e) {
         console.log(e);
         res.sendStatus(400);
