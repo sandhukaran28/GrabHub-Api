@@ -12,6 +12,11 @@ const foodSchema = new mongoose.Schema({
     desc: {
         type: String,
         trim: true
+    },
+    image: {
+        type: String,
+        trim: true,
+        required: true
     }
 });
 
