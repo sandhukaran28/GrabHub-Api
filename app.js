@@ -21,7 +21,7 @@ mongoose.connect(process.env.MONGO_URL)
     .catch((e) => {
         console.log(e);
     })
-seedDb();
+// seedDb();
 
 app.use(express.json());
 app.use(cors({
