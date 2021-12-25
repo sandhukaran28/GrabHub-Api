@@ -14,7 +14,7 @@ require('dotenv').config();
 
 
 // mongodb://localhost:27017/GrabHub
-mongoose.connect(process.env.MONGO_URL)
+mongoose.connect('mongodb://localhost:27017/GrabHub')
     .then(() => {
         console.log('Connected to database GrabHub');
     })
@@ -25,7 +25,7 @@ mongoose.connect(process.env.MONGO_URL)
 
 app.use(express.json());
 app.use(cors({
-    origin: "*",
+    origin: ['http://localhost:3000', 'https://grabhub.netlify.app/'],
     credentials: true
 }, ))
 

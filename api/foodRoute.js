@@ -4,7 +4,7 @@ const Food = require('../models/food');
 const Order = require('../models/order');
 const auth = require('../middleware/auth');
 const User = require('../models/User');
-
+const sendEmail = require('../sendGrid');
 
 
 router.get('/allfoods', async (req, res) => {
@@ -40,6 +40,8 @@ router.post('/addFood', auth, async (req, res) => {
 router.post('/placeorder', auth, async (req, res) => {
 
     try {
+
+        const email = req.cookies.email;
         const {
             cart: orderedItems
         } = req.body;
@@ -60,6 +62,70 @@ router.post('/placeorder', auth, async (req, res) => {
             'msg': 'Order Placed Successfully'
         });
         console.log('Order Placed');
+        const template = `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    
+        <style>
+            *{
+                padding: 0;
+                margin: 0;
+            }
+            .mainDiv{
+                background: #444691;
+                width: 450px;
+                height: 400px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .inner{
+                width: 350px;
+                height: 300px; 
+                background-color: white !important;
+                margin:40px auto  
+            }
+            .header h1{
+                text-align: center;
+            }
+            .header{
+                background: #a8dadc;
+                padding: 10px;
+                color: white;
+            }
+            p{
+                padding: 10px;
+                font-size: 1.1rem;
+            }
+        </style>
+    </head>
+    <body>
+    
+            <div class="mainDiv">
+                <div class="inner">
+                    <div class="header">
+                        <h1>ORDER PLACED</h1>
+                    </div>
+                    <div>
+                    <p>
+                        Hi ${email},<br><br>
+    
+                    Confirmation of order has placed. <br><br><br>
+                    Thanks! <br>
+                    Team Grabhub
+                    </p>
+                    </div>
+                </div>
+        </div>
+        
+    </body>
+    </html>`;
+        sendEmail(email, template, ` Hi ${email},Confirmation of your order. Thanks!  Team Grabhub`);
+
 
     } catch (e) {
         console.log(e);
