@@ -13,8 +13,9 @@ const cookieParser = require('cookie-parser')
 require('dotenv').config();
 
 
-// mongodb://localhost:27017/GrabHub
-mongoose.connect('mongodb://localhost:27017/GrabHub')
+// mongodb://localhost:27017/
+//process.env.MONGO_URL
+mongoose.connect(process.env.MONGO_URL)
     .then(() => {
         console.log('Connected to database GrabHub');
     })
