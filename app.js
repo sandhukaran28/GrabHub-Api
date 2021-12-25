@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -9,8 +13,8 @@ const cookieParser = require('cookie-parser')
 require('dotenv').config();
 
 
-
-mongoose.connect('mongodb://localhost:27017/GrabHub')
+// mongodb://localhost:27017/GrabHub
+mongoose.connect(process.env.MONGO_URL)
     .then(() => {
         console.log('Connected to database GrabHub');
     })
